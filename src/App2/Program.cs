@@ -11,8 +11,8 @@ namespace App2
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"Hello from {typeof(Program).FullName}: {string.Join(" ", args)}. Sleeping...");
-            Thread.Sleep(1000*5);
+            Console.WriteLine($"Hello from {typeof(Program).FullName}, in domain {AppDomain.CurrentDomain.FriendlyName}: {string.Join(" ", args)}. Sleeping...");
+            Thread.Sleep(1000 * 2);
         }
     }
 }

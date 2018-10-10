@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 
 namespace Host
 {
+    class RemoteHost : MarshalByRefObject
+    {
+        public void ExecuteApplication(string appPath, string[] args)
+        {
+            AppDomain.CurrentDomain.ExecuteAssembly(appPath, args);
+        }
+    }
+
     class Program
     {
         static int Main(string[] args)
@@ -43,11 +51,15 @@ namespace Host
 
             var domain = AppDomain.CreateDomain("HostDomain", hostAssembly.Evidence, domainSetup);
 
+            var remoteHost = (RemoteHost)domain.CreateInstanceAndUnwrap(hostAssembly.FullName, typeof(RemoteHost).FullName);
+            
             var appArgs = new [] { "These", "are", "args" };
 
             foreach (var app in new[] { app1Path, app2Path })
             {
-                ExecuteDomain(app, appArgs, domain);
+                ExecuteRemoteHost(app, appArgs, remoteHost);
+
+                // ExecuteDomain(app, appArgs, domain);
                 // LoadFile(app, appArgs);
             }
 
@@ -60,6 +72,11 @@ namespace Host
         static void ExecuteDomain(string appPath, string[] args, AppDomain domain)
         {
             domain.ExecuteAssembly(appPath, args);
+        }
+
+        static void ExecuteRemoteHost(string appPath, string[] args, RemoteHost host)
+        {
+            host.ExecuteApplication(appPath, args);
         }
 
         private delegate void main1();

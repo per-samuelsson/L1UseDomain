@@ -11,7 +11,7 @@ namespace App1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"Hello from {typeof(Program).FullName}: {string.Join(" ", args)}");
+            Console.WriteLine($"Hello from {typeof(Program).FullName}, in domain {AppDomain.CurrentDomain.FriendlyName}: {string.Join(" ", args)}");
             Console.WriteLine(new Class1().Foo);
         }
     }
